@@ -4,11 +4,6 @@ searchGoogle = function(word){
     chrome.tabs.create({url: "https://www.google.com/search?q=" + query});
 };
 
-searchSeznam = function(word){
-    var query = word.selectionText;
-    chrome.tabs.create({url: "https://search.seznam.cz/?q=" + query});
-};
-
 searchGoogleTrends = function(word){
     var query = word.selectionText;
     chrome.tabs.create({url: "https://trends.google.com/trends/explore?geo=CZ&q=" + query});
@@ -27,20 +22,6 @@ siteGoogleSearch = function(word){
 
 };
 
-siteSeznamSearch = function(word){
-
-    var query = word.selectionText;
-
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        var tab = tabs[0];
-        var url = new URL(tab.url);
-        var domain = url.hostname;
-
-        chrome.tabs.create({url: "https://search.seznam.cz/?q=site:"+domain+" "+ query});
-    });
-
-};
-
 siteGoogle = function(word){
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         var tab = tabs[0];
@@ -52,32 +33,12 @@ siteGoogle = function(word){
 
 };
 
-siteSeznam = function(word){
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        var tab = tabs[0];
-        var url = new URL(tab.url);
-        var domain = url.hostname;
-
-        chrome.tabs.create({url: "https://search.seznam.cz/?q=site:"+domain});
-    });
-
-};
-
 urlGoogle = function(word){
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         var tab = tabs[0];
         var url = new URL(tab.url);
 
         chrome.tabs.create({url: "https://www.google.com/search?q=inurl:"+url});
-    });
-};
-
-urlSeznam = function(word){
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        var tab = tabs[0];
-        var url = new URL(tab.url);
-
-        chrome.tabs.create({url: "https://search.seznam.cz/?q="+url});
     });
 };
 
@@ -92,7 +53,6 @@ urlGSC = function(word){
 
         chrome.tabs.create({url: "https://search.google.com/search-console/performance/search-analytics?resource_id="+protocol+"//"+domain});
     });
-
 
 };
 
@@ -127,73 +87,23 @@ urlGSCURL = function(word){
 };
 
 
-function mmdomainProfiler(){
+function google_ready(){
 
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        var tab = tabs[0];
-        var url = new URL(tab.url);
-        var domain = url.hostname;
-
-        chrome.tabs.create({url: "https://www.marketingminer.com/cs/profiler/domain/"+domain+"/cs_CZ"});
-    });
-}
-
-mmkeywordProfiler = function(word){
-    var query = word.selectionText;
-    chrome.tabs.create({url: "https://www.marketingminer.com/cs/profiler/keyword/" + query + "/cs_CZ"});
-};
-
-mmkeywordMiner = function(){
-    chrome.tabs.create({url: "https://www.marketingminer.com/cs/wizard/keyword"});
-};
-
-mmurlMiner = function(){
-    chrome.tabs.create({url: "https://www.marketingminer.com/cs/wizard/url"});
-};
-
-mmdomainMiner = function(){
-    chrome.tabs.create({url: "https://www.marketingminer.com/cs/wizard/domain"});
-};
-
-mmopen = function(){
-
-    chrome.tabs.create({url: "https://www.marketingminer.com/cs"});
-};
-
-
-function seznam_ready(){
-
-    seznam_create();
-    seznam_destroy();
+    google_create();
 
 }
 // <000> - Začátek funkcí
 function aktualizujmenu(){
 
     chrome.contextMenus.removeAll();
-    seznam_ready();
+    google_ready();
     utility_ready();
-    // marketingminer_ready();
     ahrefs_ready();
 
 }
 
 
-function seznam_destroy(){
-
-    chrome.contextMenus.remove("20", function () {});
-
-    chrome.contextMenus.remove("40", function () {});
-
-    chrome.contextMenus.remove("120", function () {});
-
-    chrome.contextMenus.remove("150", function () {});
-
-    chrome.contextMenus.remove("160", function () {});
-
-}
-
-function seznam_create(){
+function google_create(){
 
     chrome.contextMenus.create({
         title: "Check URL Indexation in Google",
@@ -209,12 +119,6 @@ function seznam_create(){
         onclick: siteGoogle
     });
 
-    chrome.contextMenus.create({
-        title: "site:domain in Seznam",
-        id: "120",
-        contexts:["all"],
-        onclick: siteSeznam
-    });
 
     chrome.contextMenus.create({
         title: "--------------------------",
@@ -238,25 +142,12 @@ function seznam_create(){
     });
 
     chrome.contextMenus.create({
-        title: "\"%s\" in Seznam",
-        id: "20",
-        contexts: ["selection"],
-        onclick: searchSeznam
-    });
-
-    chrome.contextMenus.create({
         title: "Search site:domain \"%s\" in Google",
         id: "30",
         contexts:["selection"],
         onclick: siteGoogleSearch
     });
 
-    chrome.contextMenus.create({
-        title: "site:domain %s in Seznam",
-        id: "40",
-        contexts:["selection"],
-        onclick: siteSeznamSearch
-    });
 
 
     chrome.contextMenus.create({
@@ -288,20 +179,6 @@ function seznam_create(){
     });
 
 
-    // chrome.contextMenus.create({
-    //     title: "--------------------------",
-    //     id: "100",
-    //     contexts:["selection"],
-    //     enabled: false
-    // });
-
-
-    chrome.contextMenus.create({
-        title: "Indexation in Seznam",
-        id: "150",
-        contexts:["all"],
-        onclick: urlSeznam
-    });
 
 }
 
@@ -622,142 +499,26 @@ function ahrefs_create(){
     });
 }
 
-function ahrefs_destroy(){
-
-
-    chrome.contextMenus.remove("1300", function () {});
-
-    chrome.contextMenus.remove("1305", function () {});
-
-    chrome.contextMenus.remove("1310", function () {});
-
-    chrome.contextMenus.remove("1320", function () {});
-
-    chrome.contextMenus.remove("1330", function () {});
-
-    chrome.contextMenus.remove("1340", function () {});
-
-    chrome.contextMenus.remove("1350", function () {});
-
-    chrome.contextMenus.remove("1360", function () {});
-
-}
-
 function ahrefs_ready(){
-    chrome.storage.sync.get(["ahrefs","marketingminer"], function(result) {
+    chrome.storage.sync.get(["ahrefs"], function(result) {
         if(result.ahrefs === true){
 
             ahrefs_create();
 
-            if(result.marketingminer === true){
-                chrome.contextMenus.remove("1300", function () {});
-            }
-
         }
     });
 }
 
 
-
-function marketingminer_create(){
-
-    chrome.contextMenus.create({
-        title: "Marketing Miner",
-        id: "1105",
-        contexts:["all"],
-        onclick: mmopen
-    });
-
-    chrome.contextMenus.create({
-        title: "Domain profiler",
-        id: "1110",
-        contexts:["all"],
-        onclick: mmdomainProfiler
-    });
-
-    chrome.contextMenus.create({
-        title: "Keyword profiler",
-        id: "1120",
-        contexts:["all"],
-        onclick: mmkeywordProfiler
-    });
-
-    chrome.contextMenus.create({
-        title: "New keyword miner",
-        id: "1130",
-        contexts:["all"],
-        onclick: mmkeywordMiner
-    });
-
-    chrome.contextMenus.create({
-        title: "New URL miner",
-        id: "1140",
-        contexts:["all"],
-        onclick: mmurlMiner
-    });
-
-    chrome.contextMenus.create({
-        title: "New domain miner",
-        id: "1150",
-        contexts:["all"],
-        onclick: mmdomainMiner
-    });
-
-    chrome.contextMenus.create({
-        title: "--------------------------",
-        id: "1160",
-        contexts:["all"],
-        enabled: false
-    });
-}
-
-function marketingminer_destroy(){
-
-
-    chrome.contextMenus.remove("1100", function () {});
-
-    chrome.contextMenus.remove("1105", function () {});
-
-    chrome.contextMenus.remove("1110", function () {});
-
-    chrome.contextMenus.remove("1120", function () {});
-
-    chrome.contextMenus.remove("1130", function () {});
-
-    chrome.contextMenus.remove("1140", function () {});
-
-    chrome.contextMenus.remove("1150", function () {});
-
-    chrome.contextMenus.remove("1160", function () {});
-
-}
-
-function marketingminer_ready(){
-    chrome.storage.sync.get(["marketingminer"], function(result) {
-        if(result.marketingminer === true){
-
-            marketingminer_create();
-
-        }
-    });
-}
-
-// <010> - Konec funkcí
 
 
 // Zákkladní nastavení proměnných:
-chrome.storage.sync.get(["seznam","marketingminer","collabim","collabim_account","ahrefs","majestic","utility"], function(result) {
+chrome.storage.sync.get(["google","ahrefs","majestic","utility"], function(result) {
 
     // První inicializace
-    if(result.seznam == null && result.marketingminer == null && result.collabim == null && result.ahrefs == null && result.majestic == null && result.utility == null){
-        chrome.storage.sync.set({"seznam": true}, function() {});
-        result.seznam = true;
-
-        chrome.storage.sync.set({"marketingminer": false}, function() {});
-        result.marketingminer = false;
-
-        chrome.storage.sync.set({"collabim": false}, function() {});
-        result.collabim = false;
+    if(result.google == null && result.ahrefs == null && result.majestic == null && result.utility == null){
+        chrome.storage.sync.set({"google": true}, function() {});
+        result.google = true;
 
         chrome.storage.sync.set({"ahrefs": false}, function() {});
         result.ahrefs = false;
@@ -769,20 +530,16 @@ chrome.storage.sync.get(["seznam","marketingminer","collabim","collabim_account"
         result.utility = true;
     }
 
-    // Úvodní inicializace menu:
-    //aktualizujmenu();
-
 });
 
 
-seznam_ready();
+google_ready();
 utility_create();
-// marketingminer_create();
 ahrefs_create();
 
 
 chrome.runtime.onInstalled.addListener(function (details) {
-    chrome.tabs.create({url: "https://www.zatkovic.cz/rychleseo-chrome-plugin/"});
+    chrome.tabs.create({url: "https://www.zatkovic.cz/en/fast-seo/"});
 });
 
 

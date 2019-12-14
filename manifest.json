@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "Fast SEO - less clicks, better SEO",
+  "name": "Fast SEO - fewer clicks, better SEO",
   "short_name": "Fast SEO",
-  "description": "Less clicks for better SEO. Don't copy domain and write site:domain.com in Google. By Martin Žatkovič",
-  "version": "0.0.1.0",
+  "description": "Fewer clicks for better SEO. Don't copy domain and write site:domain.com in Google. By Martin Žatkovič",
+  "version": "0.0.1.1",
   "minimum_chrome_version": "38",
   "permissions": [
     "contextMenus",
